@@ -1,0 +1,22 @@
+db.<collection name>.find(); returns all entries
+.find({ price: { $lt: 8}}); Price < 8$
+.find({ description: {$regex: /chicken/}}); all where description has chicken
+
+db.<cn>.update();
+.update({name: 'work'}.($set:{price: 13.89}));
+
+db.pizzas.insert({pizzaName: "cheese", price: 5.99, description: "cheese and so on", imageName: "cheese.jpg"})
+db.pizzas.insert({pizzaName: "meat", price: 8.99, description: "meats, cheese and so on", imageName: "meat.jpg"})
+db.pizzas.insert({pizzaName: "alfredo chicken", price: 10.99, description: "alfredo sauce, chicken, and cheese", imageName: "alfredochicken"})
+db.pizzas.insert({pizzaName: "pepperoni", price: 7.99, description: "pepperoni and cheese", imageName: "pepperoni"})
+db.pizzas.insert({pizzaName: "BBQ chicken", price: 12.99, description: "BBQ sauce, chicken", imageName: "bbqchicken.jpg"})
+db.pizzas.insert({pizzaName: "veggie lover", price: 7.99, description: "veggies and cheese", imageName: "veggie.jpg"})
+db.pizzas.insert({pizzaName: "work", price: 10.99, description: "veggies, meat, and cheese", imageName: "work.jpg"})
+
+db.pizzas.update({pizzaName: "work"}, {$set:{price: 13.99}})
+
+db.pizzas.find({price: {$gt: 10.0}}, {pizzaName: 1, price: 1, description: 1, _id: 0})
+
+db.pizzas.find({price: {$gt: 10.0}}, {pizzaName: 1, price: 1, description: 1, _id: 0}).sort({price: 1})
+
+db.pizzas.find({price: {$gt: 10.0}, description: {$regex:/chicken/}}, {pizzaName: 1, price: 1, description: 1, _id: 0})

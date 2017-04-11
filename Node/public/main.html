@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<base href="/">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-resource.js"></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-route.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.js"></script>
+	<script type="text/javascript" src="/js/main.js"></script>
+	<script type="text/javascript" src="/js/home.js"></script>
+	<script type="text/javascript" src="/js/classList.js"></script>
+	<script type="text/javascript" src="/js/studentList.js"></script>
+	<script type="text/javascript" src="/js/studentdb.js"></script>
+	<script type="text/javascript" src="/js/groupList.js"></script>
+	<script type="text/javascript" src="/js/login.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/css/signInStyle.css">
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+<body>
+	<div ng-app="mainApp" class="page-wrapper">
+
+		<div class="container-fluid page-body" ng-show="authenticated">
+			<div class="row">
+				<!-- SIDEBAR -->
+				<div class="col-sm-3 col-md-2 navigation">
+					<div class="sidebar">
+						<div ng-controller="sidebarController as sidebar">
+							<ul>
+								<li ng-repeat="parent in sidebarArr">
+									<a href="" class="active-{{parent.active}} sideParent" data-toggle="collapse" data-target="#{{parent.text}}Drop" id="{{parent.text}}" ng-click="setActiveParent(parent)">{{parent.text}}</a>
+									<ul id="{{parent.text}}Drop" class="collapse refreshCollapse">
+										<li ng-repeat="child in parent.children">
+											<a href="" class="active-{{child.active}} sideChild" ng-click="setActiveChild(child)">{{child.text}}</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- HEADER -->
+					<nav class="navbar navbar-default navbar-fixed-top">
+				  		<div class="col-sm-4 col-md-3 text-left">
+				  			<h3>Brooks's Automotive</h3>
+				  		</div>
+				  		<div class="col-sm-6 col-md-7">
+				  			<h3 ng-bind="currentClass.name" class="text-center"></h3>
+				  		</div>
+				  		<div class="col-sm-2 col-md-2 text-center">
+				  			<div class="btn-group">
+								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="account-btn">
+									{{current_user.username}}
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li><a href="" data-toggle="modal" data-target="#accountModal" ng-click="openAccount()">Account</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="" ng-click="signout()">Logout</a></li>
+								</ul>
+							</div>
+				  		</div>
+					</nav>
+					<!-- FOOTER -->
+					<nav class="navbar navbar-default navbar-fixed-bottom">
+						<div class="col-sm-3 col-md-2">
+				  		</div>
+				  		<div class="col-sm-5 col-md-6">
+				  			<h3 ng-bind="stateName.current.name" class="text-center"></h3>
+				  		</div>
+				  		<div class="col-sm-4 col-md-4">
+				  		<ul class="list-inline text-center">
+				  			<li><a href="" ng-click="homeBtn()">Home</a> |</li>
+				  			<li><a href="" ng-click="vehiclesBtn()">Vehicles</a> |</li>
+				  			<li><a href="" ng-click="pricesBtn()">Prices</a> |</li>
+				  			<li><a href="" ng-click="cartBtn()">Shopping Cart</a> |</li>
+				  			<li><a href="" ng-click="contactBtn()">Contact</a> |</li>
+				  			<li><a href="" data-toggle="modal" data-target="#helpModal" ng-click="helpBtn()">Help</a></li>
+				  		</div>
+					</nav>
+				</div> <!-- End sidebar -->
+
+				<!-- BODY CONTENT -->
+				<div class="col-sm-9 col-md-10 body-content">
+					<div class="vertical-align">
+						<ui-view></ui-view>
+					</div>
+				</div> <!-- End body-content -->
+			</div> <!-- End row -->
+		</div> <!-- End container -->
+		<div ng-show="!authenticated">
+			<ui-view></ui-view>
+		</div>
+		<!-- Help modal -->
+  		<div class="modal fade" id="helpModal" role="dialog">
+		    <div class="modal-dialog">
+		      	<div class="modal-content">
+			        <div class="modal-header">
+			            <button type="button" class="close" data-dismiss="modal">&times;</button>
+			            <h4 class="modal-title">Help/FAQ</h4>
+			        </div>
+			        <div class="modal-body">
+			            <p>Insert help text here</p>
+			        </div>
+			        <div class="modal-footer">
+			            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        </div>
+			    </div>
+		    </div>
+		</div>
+		<!-- Account modal -->
+  		<div class="modal fade" id="accountModal" role="dialog">
+		    <div class="modal-dialog">
+		      	<div class="modal-content">
+			        <div class="modal-header">
+			            <button type="button" class="close" data-dismiss="modal">&times;</button>
+			            <h4 class="modal-title">Account Settings</h4>
+			        </div>
+			        <div class="modal-body">
+			            <form name="accountForm" ng-model="accountForm" novalidate class="simple-form">
+							<label>First Name:<br> <input class="form-control" placeholder="" name="" type="text" ng-model="accountForm.fname"></label><br>
+							<label>Last Name:<br> <input class="form-control" placeholder="" name="" type="text" ng-model="accountForm.lname"></label><br>
+							<label>Email:<br> <input class="form-control" placeholder="" name="" type="text" ng-model="accountForm.email"></label><br>
+							<label>Username:<br> <input readonly class="form-control" placeholder="" name="" type="text" ng-model="accountForm.username"></label><br>
+							<p>Change password:<br></p>
+							<label>New Password:<br> <input readonly class="form-control" placeholder="" name="" type="text" ng-model="accountForm.password"></label><br>
+							<label>Retype:<br> <input readonly class="form-control" placeholder="" name="" type="text" ng-model="accountForm.passMatch"></label><br>
+							<input type="submit" class="btn btn-primary" ng-click="changePass()" value="Change">
+						</form>
+			        </div>
+			        <div class="modal-footer">
+			            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			            <input type="submit" class="btn btn-primary" ng-click="updateAccount(accountForm)" value="Save">
+			        </div>
+			    </div>
+		    </div>
+		</div>
+
+	</div> <!--mainApp div (whole page) -->
+</body>
+</html>

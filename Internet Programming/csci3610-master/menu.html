@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Menu</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/styleB.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<div class="container">
+	<div class="page-header">
+		<div class="row">
+			<img class="col-md-3" src="./images/logo.png" alt="logo"> 
+			<div class="col-md-7">
+				<ul  class="list-inline">	
+					<li><a class="list-inline-item" href="./menu.html">Menu</a></li>
+					<li><a class="list-inline-item" href="./index.html">Main</a></li>
+					<li><a class="list-inline-item" href="./special.html">Special</a></li>
+					<li><a class="list-inline-item" href="./about.html">About</a></li>
+				</ul>
+			</div>
+			<div class="col-md-2">
+				<a href="./cart.html"><img class="cart" src="./images/cart.png" alt="cart" style="width:60px;height:60px;"><span class="badge" id="numItem">0</span></a>	
+				<span></span>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="pizza-images">
+			<div class="col-md-4">
+				<div class="text-center">
+					<p>Pepperoni</p>
+					<img class="pizza" src="./images/pepperoni.jpg" alt="pepperoni">
+					<div class="text-center">
+						<button type="button" class="btn btn-danger">Order</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="text-center">
+					<p>Chicken Alfredo</p>
+					<img class="pizza" src="./images/alfredo.jpg" alt="alfredo">
+					<div class="text-center">
+						<button type="button" class="btn btn-danger">Order</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="text-center">
+					<p>Everything</p>
+					<img class="pizza" src="./images/everything.jpg" alt="everything">
+					<div class="text-center">
+						<button type="button" class="btn btn-danger">Order</button>
+					</div>			
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+
+	<footer>
+		<img class="logo-footer" src="./images/logo.png" alt="logo" height="100" width="150">
+		<a class="list-inline-item" href="./service.html">Customer Service</a>
+		<a class="list-inline-item" href="./account.html">Account</a>
+		<a class="list-inline-item" href="./special.html">Special</a>
+		<a class="list-inline-item" href="./about.html">About</a>
+		<button type="button" class="btn btn-danger" onclick="clearCart()">Clear Cart</button>
+		<div class="row">
+			<div class="col-md-4">
+				<p>Lorem ipsum Sit amet adipisicing dolor non anim voluptate cillum dolor eu eu ad irure.</p>
+			</div>
+			<div class="col-md-4">
+				<p>Lorem ipsum Sit amet adipisicing dolor non anim voluptate cillum dolor eu eu ad irure.</p>
+			</div>
+			<div class="col-md-4">
+				<p>Lorem ipsum Sit amet adipisicing dolor non anim voluptate cillum dolor eu eu ad irure. Lorem ipsum Duis aute Excepteur.</p>
+			</div>
+		</div>
+	</footer>
+</div>
+<script type="text/javascript" src="./js/cartClient.js"></script>
+<script type="text/javascript">
+	registButtonEvents()
+</script>
+</body>
+</html>
