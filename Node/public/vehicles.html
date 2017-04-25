@@ -1,1 +1,10 @@
 <h1>Vehicles</h1>
+
+<h2>Current Vehicles</h2>
+
+<h2>Add New Vehicle</h2>
+<form name="form" ng-model="form" novalidate class="simple-form">
+	<input type="text" placeholder="Username" id="user" ng-model="username">
+	<input type="password" placeholder="Password" id="pass" ng-model="password">
+	<input type="submit" class="login login-submit" value="log-in" ng-click="storeVehicle(year, make, model)">
+</form>
