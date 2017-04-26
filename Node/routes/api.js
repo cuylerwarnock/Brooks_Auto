@@ -25,48 +25,81 @@ function isAuthenticated (req, res, next) {
 };
 
 //Register the authentication middleware
-// router.use('/studentList', isAuthenticated);
+router.use('/parts', isAuthenticated);
+router.use('/orders', isAuthenticated);
 
 //USERS
 router.route('/users/:username')
 	
-	//check for user
+	//get user
 	.get(function(req, res){
-		User.findOne({username: req.params.username}, function(err, data){
-			if (err){
-				return res.send(500, err);
-			}
-			if(data===null)
-				return res.json({available: true});
-			else
-				return res.json({available: false});
-		});
+		//username passed, so one user
+		if(req.params.username){
+			User.findOne({username: req.params.username}, function(err, user){
+				if (err){
+					return res.status(500).send(err);
+				}
+				//return user. if none found, returns null
+				return res.send(user);
+			});
+		}
+		else{ //no username passed, get all users
+			User.find(function(err, users){
+				if(err){
+					return res.status(500).send(err);
+				}
+				return res.send(users);
+			})
+		}
 	})
 
-	.put(function(req, res){
-		User.findOne({username: req.params.username}, function(err, newUser){
-			if (err){
-				return res.send(500, err);
+	//create new user
+	.post(function(req, res){
+		var user = new User();
+		user.fname = req.body.fname;
+		user.lname = req.body.lname;
+		user.email = req.body.email;
+		user.phone = req.body.phone;
+		user.username = req.body.username;
+		user.password = bCrypt.hashSync(req.params.password, bCrypt.genSaltSync(10), null);
+		user.vehicles = [];
+		user.save(function(err, newUser){
+			if(err){
+				res.status(500).send(err);
 			}
-			newUser.fname=req.params.fname;
-			newUser.lname=req.params.lname;
-			newUser.email=req.params.email;
-			newUser.password=bCrypt.hashSync(req.params.password, bCrypt.genSaltSync(10), null);
-			newUser.save(function(err, post){
+			return res.send(newUser);
+		})
+
+	})
+
+	//update existing user
+	.put(function(req, res){
+		User.findOne({username: req.params.username}, function(err, user){
+			if (err){
+				return res.status(500).send(err);
+			}
+			user.fname = req.body.fname;
+			user.lname = req.body.lname;
+			user.email = req.body.email;
+			user.phone = req.body.phone;
+			user.username = req.body.username;
+			user.vehicles = [];
+			user.save(function(err, updateUser){
 				if(err){
-					return res.send(500, err);
+					return res.status(500).send(err);
 				}
-				return res.json(newUser);
+				return res.send(updateUser);
 			})
 		})
 	});
 
+//update password
 router.route('/users/password/:username')
 
 	.put(function(req, res){
 		User.findOne({username: req.params.username}, function(err, newUser){
 			if (err){
-				return res.send(500, err);
+				return res.status(500).send(err);
 			}
 			newUser.password=bCrypt.hashSync(req.params.password, bCrypt.genSaltSync(10), null);
 		})
@@ -75,27 +108,29 @@ router.route('/users/password/:username')
 //PARTS
 router.route('/parts/:_id')
 
+	//Get part(s)
 	.get(function(req, res){
 		if(req.params._id){
 			//get by id
-			Part.find(function(err, parts){
-				if(err){
-					return res.status(500).send(err);
-				}
-				return res.send(parts);
-			})
-		}
-		else{
-			//get all
 			Part.find({_id: req.params._id}, function(err, part){
 				if(err){
 					return res.status(500).send(err);
 				}
 				return res.send(part);
-			})
+			});
+		}
+		else{
+			//get all
+			Part.find(function(err, parts){
+				if(err){
+					return res.status(500).send(err);
+				}
+				return res.send(parts);
+			});
 		}
 	})
 
+	//create new part
 	.post(function(req, res){
 		var part = new Part();
 		part.name = req.body.name;
@@ -110,6 +145,7 @@ router.route('/parts/:_id')
 		})
 	})
 
+	//update existing part
 	.put(function(res, req){
 		Part.findOne({_id: req.params._id}, function(err, part){
 			if(err){
@@ -136,7 +172,9 @@ router.route('/parts/:_id')
 
 //ORDER
 router.route("/orders/:_id")
-.get(function(req, res){
+
+	//get order(s)
+	.get(function(req, res){
 		if(req.params._id){
 			//get by id
 			Order.find(function(err, orders){
@@ -157,11 +195,12 @@ router.route("/orders/:_id")
 		}
 	})
 
+	//create new order
 	.post(function(req, res){
 		var order = new Order();
 		order.name = req.body.name;
-		order.partID = req.body.partID;
-		order.price = req.body.price;
+		order.total = req.body.total;
+		order.parts = req.body.parts;
 		order.save(function(err, post){
 			if(err){
 				return res.status(500).send(err);
@@ -171,14 +210,15 @@ router.route("/orders/:_id")
 		})
 	})
 
+	//update existing order
 	.put(function(res, req){
 		Order.findOne({_id: req.params._id}, function(err, order){
 			if(err){
 				return res.status(500).send(err);
 			}
 			order.name = req.body.name;
-			order.partID = req.body.partID;
-			order.price = req.body.price;
+			order.total = req.body.total;
+			order.parts = req.body.parts;
 			order.save(function(err, post){
 				if(err){
 					return res.status(500).send(err);

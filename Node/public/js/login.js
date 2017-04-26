@@ -1,7 +1,3 @@
-// var userReady = false;
-// var emailReady = false;
-// var passReady = false;
-
 angular.module('mainApp')
 	.controller("authenticationController", function($scope, $rootScope, $state, $http, $location, loginService, signupService, checkUserAvailService, classTeacherService) {
 		// $scope.confPass="";
@@ -134,24 +130,28 @@ angular.module('mainApp')
 	  	}
 
 	  	$scope.register = function(){
-	  		$scope.user={
-	  			fname: $scope.regFName,
-				lname: $scope.regLName,
-				email: $scope.regEmail,
-				username: $scope.regUser,
-				password: $scope.regPass,
-	  		};
-	    	signupService.save($scope.user, function(data){
-	    		if(data.state == 'success'){
-		    			$rootScope.authenticated = data.user;
-			    		$rootScope.current_user = data.user;
-			    		$state.go('Home');
-	   			}
-	    		else{
-	    			$scope.error_message = data.message;
-	    			console.log(data.message);
-	    		}
-	    	})
+	  		if($scope.validPass && $scope.validMatch && $scope.validEmail && $scope.validUser){
+		  		$scope.user={
+		  			fname: $scope.regFName,
+					lname: $scope.regLName,
+					email: $scope.regEmail,
+					username: $scope.regUser,
+					password: $scope.regPass,
+					phone: $scope.regPass,
+					vehicles: []
+		  		};
+		    	signupService.save($scope.user, function(data){
+		    		if(data.state == 'success'){
+			    			$rootScope.authenticated = data.user;
+				    		$rootScope.current_user = data.user;
+				    		$state.go('Home');
+		   			}
+		    		else{
+		    			$scope.error_message = data.message;
+		    			console.log(data.message);
+		    		}
+		    	})
+	    	}
 	  	};
 
 	  	$scope.bypass = function(){
