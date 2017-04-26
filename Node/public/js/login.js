@@ -8,11 +8,13 @@ angular.module('mainApp')
 		$scope.regFName="";
 		$scope.regLName="";
 		$scope.regEmail="";
+		$scope.regPhone="";
 		$scope.regUser="";
 		$scope.regPass="";
 		$scope.regPass2="";
 
 		$scope.validEmail=true;
+		$scope.validPhone=true;
 		$scope.validUser=true;
 		$scope.availUser=true;
 		$scope.validPass=true;
@@ -39,6 +41,10 @@ angular.module('mainApp')
   			// 	emailReady = false;
   			// }
 		};
+
+		$scope.isPhoneValid = function(){
+			$scope.validPhone = $scope.regPhone.match(/\d/g).length===10;
+		}
 
 		$scope.isPassValid = function(){
 			
@@ -119,13 +125,17 @@ angular.module('mainApp')
 	  		$state.go('Signup');
 	  	}
 
+	  	$scope.beginLogin = function(){
+	  		$state.go('Login');
+	  	}
+
 	  	//maybe implement isUserAvail function using a service just to check
 	  	//if we can findOne matching user in db, then use if(user) to return error
 	  	//instead of relying on flash messages
 
 	  	$scope.isUserAvailable = function(){
 	  		$scope.availUser=checkUserAvailService.get({username: $scope.regUser}, function(res){
-	  			$scope.availUser=$scope.availUser.available
+	  			$scope.availUser=res;
 	  		});
 	  	}
 
@@ -137,7 +147,7 @@ angular.module('mainApp')
 					email: $scope.regEmail,
 					username: $scope.regUser,
 					password: $scope.regPass,
-					phone: $scope.regPass,
+					phone: $scope.regPhone,
 					vehicles: []
 		  		};
 		    	signupService.save($scope.user, function(data){
@@ -148,7 +158,7 @@ angular.module('mainApp')
 		   			}
 		    		else{
 		    			$scope.error_message = data.message;
-		    			console.log(data.message);
+		    			console.log(data);
 		    		}
 		    	})
 	    	}

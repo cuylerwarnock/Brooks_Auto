@@ -53,24 +53,38 @@ router.route('/users/:username')
 		}
 	})
 
-	//create new user
-	.post(function(req, res){
-		var user = new User();
-		user.fname = req.body.fname;
-		user.lname = req.body.lname;
-		user.email = req.body.email;
-		user.phone = req.body.phone;
-		user.username = req.body.username;
-		user.password = bCrypt.hashSync(req.params.password, bCrypt.genSaltSync(10), null);
-		user.vehicles = [];
-		user.save(function(err, newUser){
-			if(err){
-				res.status(500).send(err);
-			}
-			return res.send(newUser);
-		})
+	// //create new user
+	// .post(function(req, res){
+	// 	console.log("WE made ti");
+	// 	User.find({username: req.body.username}, function(err, userFound){
+	// 		if(err){
+	// 			return res.status(500).send(err);
+	// 		}
+	// 		console.log("Checking for user");
+	// 		if(userFound){
+	// 			console.log("User exists! Sending this to client");
+	// 			return res.send({status: "User already exists!"});
+	// 		}
+	// 		else{
+	// 			console.log("User does not exist yet. Creating");
+	// 			var user = new User();
+	// 			user.fname = req.body.fname;
+	// 			user.lname = req.body.lname;
+	// 			user.email = req.body.email;
+	// 			user.phone = req.body.phone;
+	// 			user.username = req.body.username;
+	// 			user.password = bCrypt.hashSync(req.params.password, bCrypt.genSaltSync(10), null);
+	// 			user.vehicles = [];
+	// 			user.save(function(err, newUser){
+	// 				if(err){
+	// 					return res.status(500).send(err);
+	// 				}
+	// 				return res.send(newUser);
+	// 			})
+	// 		}
+	// 	})
 
-	})
+	// })
 
 	//update existing user
 	.put(function(req, res){
@@ -228,3 +242,5 @@ router.route("/orders/:_id")
 			})
 		})
 	});
+
+module.exports = router;
