@@ -82,7 +82,7 @@ app.config([
 
 app.factory('sidebarData', [function() {
 	var sbArr=[
-		{text: "Home", active: false, children: []},
+		{text: "Home", active: true, children: []},
 		{text: "Vehicles", active: false, children: []},
 		{text: "Prices", active: false, children: []},
 		{text: "Cart", active: false, children: []},
@@ -126,55 +126,28 @@ app.controller("sidebarController", function($scope, $state, sidebarData, $rootS
 	})
 
 	$rootScope.homeBtn=function(){
-		$state.go("Home");
+		var parentAng=$scope.sidebarArr[0];
+		$scope.setActiveParent(parentAng);
 	};
 
 	$rootScope.vehiclesBtn=function(){
-		var parent=document.getElementById('Vehicles-sidebar-button');
-		if(!parent.getAttribute("aria-expanded")){
-			$timeout(function(){
-				parent.click();
-			}, 0);
-		}
 		var parentAng=$scope.sidebarArr[1];
 		$scope.setActiveParent(parentAng);
-		$scope.setActiveChild(parentAng.children[0]);
 	};
 
 	$rootScope.pricesBtn=function(){
-		var parent=document.getElementById('Prices-sidebar-button');
-		if(!parent.getAttribute("aria-expanded")){
-			$timeout(function(){
-				parent.click();
-			}, 0);
-		}
 		var parentAng=$scope.sidebarArr[2];
 		$scope.setActiveParent(parentAng);
-		$scope.setActiveChild(parentAng.children[0]);
 	};
 
 	$rootScope.cartBtn=function(){
-		var parent=document.getElementById('Cart-sidebar-button');
-		if(!parent.getAttribute("aria-expanded")){
-			$timeout(function(){
-				parent.click();
-			}, 0);
-		}
 		var parentAng=$scope.sidebarArr[3];
 		$scope.setActiveParent(parentAng);
-		$scope.setActiveChild(parentAng.children[0]);
 	};
 
 	$rootScope.contactBtn=function(){
-		var parent=document.getElementById('Contact-sidebar-button');
-		if(!parent.getAttribute("aria-expanded")){
-			$timeout(function(){
-				parent.click();
-			}, 0);
-		}
 		var parentAng=$scope.sidebarArr[4];
 		$scope.setActiveParent(parentAng);
-		$scope.setActiveChild(parentAng.children[0]);
 	};
 
 	$rootScope.accountForm={};
@@ -223,56 +196,6 @@ app.controller("sidebarController", function($scope, $state, sidebarData, $rootS
 			changePasswordService.update({username: $rootScope.current_user.username});
 		}
 	}
-});
-
-
-app.factory('studentService', function($resource){
-	return $resource('/api/studentList/:_id', { _id: '@_id' },
-    {
-        'update': { method:'PUT' }
-    });
-});
-
-app.factory('studentByClassService', function($resource){
-	return $resource('/api/studentList/class/:class', {},
-    {
-        'update': { method:'PUT' }
-    });
-});
-
-app.factory('studentByGroupService', function($resource){
-	return $resource('/api/studentList/group/:group', {},
-    {
-        'update': { method:'PUT' }
-    });
-});
-
-app.factory('classService', function($resource){
-	return $resource('/api/classList/:_id', { _id: '@_id' },
-    {
-        'update': { method:'PUT' }
-    });
-});
-
-app.factory('classTeacherService', function($resource){
-	return $resource('/api/classList/teacher/:teacher', {},
-    {
-        'update': { method:'PUT' }
-    });
-});
-
-app.factory('groupService', function($resource){
-	return $resource('/api/groupList/:_id', { _id: '@_id' },
-    {
-        'update': { method:'PUT' }
-    });
-});
-
-app.factory('groupByClassService', function($resource){
-	return $resource('/api/groupList/class/:class', {},
-    {
-        'update': { method:'PUT' }
-    });
 });
 
 app.factory('loginService', function($resource){

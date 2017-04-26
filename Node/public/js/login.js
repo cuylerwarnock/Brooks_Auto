@@ -1,5 +1,5 @@
 angular.module('mainApp')
-	.controller("authenticationController", function($scope, $rootScope, $state, $http, $location, loginService, signupService, checkUserAvailService, classTeacherService) {
+	.controller("authenticationController", function($scope, $rootScope, $state, $http, $location, loginService, signupService, checkUserAvailService) {
 		// $scope.confPass="";
 		// $scope.confEmail="";
 		$scope.user = {username: '', password: ''};
@@ -165,6 +165,6 @@ angular.module('mainApp')
 	  	};
 
 	  	$scope.bypass = function(){
-	  		$scope.login("bn38","hehexd");
+	  		$scope.login("bn38","Hehexd123");
 	  	};
 	});
