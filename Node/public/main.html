@@ -32,10 +32,10 @@
 						<div ng-controller="sidebarController as sidebar">
 							<ul>
 								<li ng-repeat="parent in sidebarArr">
-									<a href="" class="active-{{parent.active}} sideParent" data-toggle="collapse" data-target="#{{parent.text}}Drop" id="{{parent.text}}" ng-click="setActiveParent(parent)">{{parent.text}}</a>
+									<a href="" id="{{parent.text.split(' ').join('')}}-sidebar-button" class="active-{{parent.active}} sideParent" data-toggle="collapse" data-target="#{{parent.text}}Drop" id="{{parent.text}}" ng-click="setActiveParent(parent)">{{parent.text}}</a>
 									<ul id="{{parent.text}}Drop" class="collapse refreshCollapse">
 										<li ng-repeat="child in parent.children">
-											<a href="" class="active-{{child.active}} sideChild" ng-click="setActiveChild(child)">{{child.text}}</a>
+											<a href="" id="{{child.text.split(' ').join('')}}-sidebar-button" class="active-{{child.active}} sideChild" ng-click="setActiveChild(child)">{{child.text}}</a>
 										</li>
 									</ul>
 								</li>

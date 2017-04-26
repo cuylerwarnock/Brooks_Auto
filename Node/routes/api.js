@@ -2,9 +2,8 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var Student = mongoose.model('Student');
-var Class = mongoose.model('Class');
-var Group = mongoose.model('Group');
+var Part = mongoose.model('Part');
+var Order = mongoose.model('Order');
 var bCrypt = require('bcrypt-nodejs');
 
 //Used for routes that must be authenticated.
@@ -26,9 +25,7 @@ function isAuthenticated (req, res, next) {
 };
 
 //Register the authentication middleware
-router.use('/studentList', isAuthenticated);
-router.use('/classList', isAuthenticated);
-router.use('/groupList', isAuthenticated);
+// router.use('/studentList', isAuthenticated);
 
 //USERS
 router.route('/users/:username')
@@ -73,281 +70,121 @@ router.route('/users/password/:username')
 			}
 			newUser.password=bCrypt.hashSync(req.params.password, bCrypt.genSaltSync(10), null);
 		})
+	});
+
+//PARTS
+router.route('/parts/:_id')
+
+	.get(function(req, res){
+		if(req.params._id){
+			//get by id
+			Part.find(function(err, parts){
+				if(err){
+					return res.status(500).send(err);
+				}
+				return res.send(parts);
+			})
+		}
+		else{
+			//get all
+			Part.find({_id: req.params._id}, function(err, part){
+				if(err){
+					return res.status(500).send(err);
+				}
+				return res.send(part);
+			})
+		}
 	})
 
-//STUDENTS
-//api for all studentList
-router.route('/studentList')
-	
-	//create a new student
 	.post(function(req, res){
-
-		var student = new Student();
-		student.name = req.body.name;
-		student.sid = req.body.sid;
-		student.LType = req.body.LType;
-		student.PType = req.body.PType;
-		student.RLevel = req.body.RLevel;
-		student.classes = req.body.classes;
-		student.groups = req.body.groups;
-		student.save(function(err, post) {
-			if (err){
-				return res.send(500, err);
+		var part = new Part();
+		part.name = req.body.name;
+		part.partID = req.body.partID;
+		part.price = req.body.price;
+		part.save(function(err, post){
+			if(err){
+				return res.status(500).send(err);
 			}
-			return res.json(student);
-		});
+			post.status = "success";
+			return res.send(post);
+		})
 	})
 
-	.get(function(req, res){
-		Student.find(function(err, data){
+	.put(function(res, req){
+		Part.findOne({_id: req.params._id}, function(err, part){
 			if(err){
-				return res.send(500, err);
+				return res.status(500).send(err);
 			}
-
-			return res.send(data);
-		});
+			part.name = req.body.name;
+			part.partID = req.body.partID;
+			part.price = req.body.price;
+			part.save(function(err, post){
+				if(err){
+					return res.status(500).send(err);
+				}
+				post.status = "success";
+				return res.send(post);
+			})
+		})
 	});
 
-//api for a specfic student
-router.route('/studentList/:_id')
-	
-	//update specified student
-	.put(function(req,res){
-		Student.findById(req.params._id, function(err, student){
-			if(err) {
-				res.send(err);
-			}
+	//Probably no need for this.
+	//Why delete a part? May need that eventually.
+	// .delete(function(res, req){
+	// 	Part.delete()
+	// })
 
-			student.name = req.body.name;
-			student.sid = req.body.sid;
-			student.LType = req.body.LType;
-			student.PType = req.body.PType;
-			student.RLevel = req.body.RLevel;
-			student.classes = req.body.classes;
-			student.groups = req.body.groups;
-
-			student.save(function(err, student){
-				if(err)
-					res.send(err);
-
-				res.json(student);
-			});
-		});
+//ORDER
+router.route("/orders/:_id")
+.get(function(req, res){
+		if(req.params._id){
+			//get by id
+			Order.find(function(err, orders){
+				if(err){
+					return res.status(500).send(err);
+				}
+				return res.send(orders);
+			})
+		}
+		else{
+			//get all
+			Order.find({_id: req.params._id}, function(err, order){
+				if(err){
+					return res.status(500).send(err);
+				}
+				return res.send(order);
+			})
+		}
 	})
-	//get specified student
-	.get(function(req,res){
-		Student.findById(req.params.id, function(err, student){
-			if(err)
-				res.send(err);
-			res.json(student);
-		});
-	})
-	//delete specified student
-	.delete(function(req,res){
-		Student.remove({
-			_id: req.params._id
-		}, function(err) {
-			if (err)
-				res.send(err);
-			res.json("deleted");
-		});
-	});
 
-//access students by class
-router.route('/studentList/class/:class')
-
-	.get(function(req, res){
-		Student.find({classes: {$elemMatch: {class: req.params.cid}}}, function(err, data){
-			if(err){
-				return res.send(500, err);
-			}
-
-			return res.send(data);
-		});
-	});
-
-//access students by group
-router.route('/studentList/group/:group')
-
-	.get(function(req, res){
-		Student.find({groups: {$elemMatch: {group: req.params.gid}}}, function(err, data){
-			if(err){
-				return res.send(500, err);
-			}
-
-			return res.send(data);
-		});
-	});
-
-//CLASSES
-//api for all classes
-router.route('/classList')
-	
-	//create a new class
 	.post(function(req, res){
-
-		var class1 = new Class();
-		class1.name = req.body.name;
-		class1.teacher = req.body.teacher;
-		class1.studentList = req.body.studentList;
-		class1.groupList = req.body.groupList;
-		class1.save(function(err, post) {
-			if (err){
-				return res.send(500, err);
-			}
-			return res.json(class1);
-		});
-	})
-
-	.get(function(req, res){
-		Class.find(function(err, data){
+		var order = new Order();
+		order.name = req.body.name;
+		order.partID = req.body.partID;
+		order.price = req.body.price;
+		order.save(function(err, post){
 			if(err){
-				return res.send(500, err);
+				return res.status(500).send(err);
 			}
+			post.status = "success";
+			return res.send(post);
+		})
+	})
 
-			return res.send(data);
-		});
-	});
-
-router.route('/classList/teacher/:teacher')
-
-	.get(function(req, res){
-		Class.find({teacher: req.params.teacher}, function(err, data){
+	.put(function(res, req){
+		Order.findOne({_id: req.params._id}, function(err, order){
 			if(err){
-				return res.send(500, err);
+				return res.status(500).send(err);
 			}
-
-			return res.send(data);
-		});
+			order.name = req.body.name;
+			order.partID = req.body.partID;
+			order.price = req.body.price;
+			order.save(function(err, post){
+				if(err){
+					return res.status(500).send(err);
+				}
+				post.status = "success";
+				return res.send(post);
+			})
+		})
 	});
-
-//api for a specfic class by _id
-router.route('/classList/:_id')
-	
-	//update specified group
-	.put(function(req,res){
-		Class.findById(req.params._id, function(err, c){
-			if(err)
-				res.send(err);
-
-			c.name = req.body.name;
-			c.teacher = req.body.teacher;
-			c.studentList = req.body.studentList;
-			c.groupList = req.body.groupList;
-
-			c.save(function(err, group){
-				if(err)
-					res.send(err);
-
-				res.json(c);
-			});
-		});
-	})
-	//get specified group
-	.get(function(req,res){
-		Class.find({_id: req.params.class}, function(err, c){
-			if(err)
-				res.send(err);
-			res.json(c);
-		});
-	})
-	//delete specified group
-	.delete(function(req,res){
-		Class.remove({
-			_id: req.params._id
-		}, function(err) {
-			if (err)
-				res.send(err);
-			res.json("deleted by id"+req.params._id);
-		});
-	});
-
-//GROUPS
-//api for all groups
-router.route('/groupList')
-	
-	//create a new group
-	.post(function(req, res){
-
-		var group = new Group();
-		group.name = req.body.name;
-		group.size = req.body.size;
-		group.activityType = req.body.activityType;
-		group.selectType = req.body.selectType;
-		group.class = req.body.class;
-		group.studentList = req.body.studentList;
-		group.save(function(err, post) {
-			if (err){
-				return res.send(500, err);
-			}
-			return res.json(group);
-		});
-	})
-
-	//shouldn't be used
-	.get(function(req, res){
-		Group.find(function(err, data){
-			if(err){
-				return res.send(500, err);
-			}
-
-			return res.send(data);
-		});
-	});
-
-router.route('/groupList/class/:class')
-
-	.get(function(req, res){
-		Group.find({"class.cid": {$in: req.params.class}}, function(err, data){
-			if(err){
-				return res.send(500, err);
-			}
-
-			return res.send(data);
-		});
-	});
-
-//api for a specfic group
-router.route('/groupList/:id')
-	
-	//update specified group
-	.put(function(req,res){
-		Group.findById(req.params.id, function(err, group){
-			if(err)
-				res.send(err);
-
-			group.name = req.body.name;
-			group.size = req.body.size;
-			group.activityType = req.body.activityType;
-			group.selectType = req.body.selectType;
-			group.class = req.body.class;
-			group.studentList = req.body.studentList;
-
-			group.save(function(err, group){
-				if(err)
-					res.send(err);
-
-				res.json(group);
-			});
-		});
-	})
-	//get specified group
-	.get(function(req,res){
-		Group.findById(req.params.id, function(err, group){
-			if(err)
-				return res.send(err);
-			return res.json(group);
-		});
-	})
-	//delete specified group
-	.delete(function(req,res){
-		Group.remove({
-			_id: req.params.id
-		}, function(err) {
-			if (err)
-				res.send(err);
-			res.send("deleted :(");
-		});
-	});
-
-module.exports = router;

@@ -130,19 +130,51 @@ app.controller("sidebarController", function($scope, $state, sidebarData, $rootS
 	};
 
 	$rootScope.vehiclesBtn=function(){
-		$state.go("Vehicles");
+		var parent=document.getElementById('Vehicles-sidebar-button');
+		if(!parent.getAttribute("aria-expanded")){
+			$timeout(function(){
+				parent.click();
+			}, 0);
+		}
+		var parentAng=$scope.sidebarArr[1];
+		$scope.setActiveParent(parentAng);
+		$scope.setActiveChild(parentAng.children[0]);
 	};
 
 	$rootScope.pricesBtn=function(){
-		$state.go("Prices");
+		var parent=document.getElementById('Prices-sidebar-button');
+		if(!parent.getAttribute("aria-expanded")){
+			$timeout(function(){
+				parent.click();
+			}, 0);
+		}
+		var parentAng=$scope.sidebarArr[2];
+		$scope.setActiveParent(parentAng);
+		$scope.setActiveChild(parentAng.children[0]);
 	};
 
 	$rootScope.cartBtn=function(){
-		$state.go("Cart");
+		var parent=document.getElementById('Cart-sidebar-button');
+		if(!parent.getAttribute("aria-expanded")){
+			$timeout(function(){
+				parent.click();
+			}, 0);
+		}
+		var parentAng=$scope.sidebarArr[3];
+		$scope.setActiveParent(parentAng);
+		$scope.setActiveChild(parentAng.children[0]);
 	};
 
 	$rootScope.contactBtn=function(){
-		$state.go("Contact");
+		var parent=document.getElementById('Contact-sidebar-button');
+		if(!parent.getAttribute("aria-expanded")){
+			$timeout(function(){
+				parent.click();
+			}, 0);
+		}
+		var parentAng=$scope.sidebarArr[4];
+		$scope.setActiveParent(parentAng);
+		$scope.setActiveChild(parentAng.children[0]);
 	};
 
 	$rootScope.accountForm={};
