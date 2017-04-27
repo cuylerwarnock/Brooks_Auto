@@ -29,6 +29,16 @@ router.route('/')
 		res.sendFile("main.html", {"root": "./public"});
 	});
 
+router.route('/default.html')
+	.get(function(req, res) {
+		res.sendFile("main.html", {"root": "./public"});
+	});
+
+router.route('/login.html')
+	.get(function(req, res) {
+		res.sendFile("main.html", {"root": "./public"});
+	});
+
 router.route('/login')
 	.get(function(req, res) {
 		res.sendFile("main.html", {"root": "./public"});
