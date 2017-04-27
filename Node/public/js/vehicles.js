@@ -7,5 +7,6 @@ angular.module("mainApp").controller("vehiclesController", function($scope, $sta
 		$scope.form.year=$scope.partsList[index].year;
 		$scope.form.make=$scope.partsList[index].make;
 		$scope.form.model=$scope.partsList[index].model;
+
 	}
 })
