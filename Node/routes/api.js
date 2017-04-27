@@ -2,9 +2,8 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var Student = mongoose.model('Student');
-var Class = mongoose.model('Class');
-var Group = mongoose.model('Group');
+var Part = mongoose.model('Part');
+var Order = mongoose.model('Order');
 var bCrypt = require('bcrypt-nodejs');
 
 //Used for routes that must be authenticated.
@@ -26,328 +25,236 @@ function isAuthenticated (req, res, next) {
 };
 
 //Register the authentication middleware
-router.use('/studentList', isAuthenticated);
-router.use('/classList', isAuthenticated);
-router.use('/groupList', isAuthenticated);
+router.use('/parts', isAuthenticated);
+router.use('/orders', isAuthenticated);
 
 //USERS
 router.route('/users/:username')
 	
-	//check for user
+	//get user
 	.get(function(req, res){
-		User.findOne({username: req.params.username}, function(err, data){
+		//username passed, so one user
+		User.findOne({username: req.params.username}, function(err, user){
 			if (err){
-				return res.send(500, err);
+				return res.status(500).send(err);
 			}
-			if(data===null)
-				return res.json({available: true});
-			else
-				return res.json({available: false});
+			//return user. if none found, returns null
+			return res.send(user);
 		});
 	})
 
+	// //create new user
+	// .post(function(req, res){
+	// 	console.log("WE made ti");
+	// 	User.find({username: req.body.username}, function(err, userFound){
+	// 		if(err){
+	// 			return res.status(500).send(err);
+	// 		}
+	// 		console.log("Checking for user");
+	// 		if(userFound){
+	// 			console.log("User exists! Sending this to client");
+	// 			return res.send({status: "User already exists!"});
+	// 		}
+	// 		else{
+	// 			console.log("User does not exist yet. Creating");
+	// 			var user = new User();
+	// 			user.fname = req.body.fname;
+	// 			user.lname = req.body.lname;
+	// 			user.email = req.body.email;
+	// 			user.phone = req.body.phone;
+	// 			user.username = req.body.username;
+	// 			user.password = bCrypt.hashSync(req.params.password, bCrypt.genSaltSync(10), null);
+	// 			user.vehicles = [];
+	// 			user.save(function(err, newUser){
+	// 				if(err){
+	// 					return res.status(500).send(err);
+	// 				}
+	// 				return res.send(newUser);
+	// 			})
+	// 		}
+	// 	})
+
+	// })
+
+	//update existing user
 	.put(function(req, res){
-		User.findOne({username: req.params.username}, function(err, newUser){
+		User.findOne({username: req.params.username}, function(err, user){
 			if (err){
-				return res.send(500, err);
+				return res.status(500).send(err);
 			}
-			newUser.fname=req.params.fname;
-			newUser.lname=req.params.lname;
-			newUser.email=req.params.email;
-			newUser.password=bCrypt.hashSync(req.params.password, bCrypt.genSaltSync(10), null);
-			newUser.save(function(err, post){
+			user.fname = req.body.fname;
+			user.lname = req.body.lname;
+			user.email = req.body.email;
+			user.phone = req.body.phone;
+			user.username = req.body.username;
+			user.vehicles = [];
+			user.save(function(err, updateUser){
 				if(err){
-					return res.send(500, err);
+					return res.status(500).send(err);
 				}
-				return res.json(newUser);
+				return res.send(updateUser);
 			})
 		})
 	});
 
-router.route('/users/password/:username')
-
-	.put(function(req, res){
-		User.findOne({username: req.params.username}, function(err, newUser){
-			if (err){
-				return res.send(500, err);
+router.route('/users/')
+	
+	.get(function(req, res){
+		User.find(function(err, users){
+			if(err){
+				return res.status(500).send(err);
 			}
-			newUser.password=bCrypt.hashSync(req.params.password, bCrypt.genSaltSync(10), null);
+			return res.send(users);
 		})
 	})
 
-//STUDENTS
-//api for all studentList
-router.route('/studentList')
-	
-	//create a new student
-	.post(function(req, res){
+//update password
+router.route('/users/password/:_id')
 
-		var student = new Student();
-		student.name = req.body.name;
-		student.sid = req.body.sid;
-		student.LType = req.body.LType;
-		student.PType = req.body.PType;
-		student.RLevel = req.body.RLevel;
-		student.classes = req.body.classes;
-		student.groups = req.body.groups;
-		student.save(function(err, post) {
+	.put(function(req, res){
+		User.findOne({_id: req.params._id}, function(err, newUser){
 			if (err){
-				return res.send(500, err);
+				return res.status(500).send(err);
 			}
-			return res.json(student);
+			newUser.password=bCrypt.hashSync(req.body.password, bCrypt.genSaltSync(10), null);
+			newUser.save(function(err, updateUser){
+				if(err){
+					return res.status(500).send(err);
+				}
+				return res.send(updateUser);
+			})
+		})
+	});
+
+//PARTS
+router.route('/parts/:_id')
+
+	//Get part(s)
+	.get(function(req, res){
+		//get by id
+		Part.find({_id: req.params._id}, function(err, part){
+			if(err){
+				return res.status(500).send(err);
+			}
+			return res.send(part);
 		});
 	})
 
-	.get(function(req, res){
-		Student.find(function(err, data){
+	//update existing part
+	.put(function(req, res){
+		Part.findOne({_id: req.params._id}, function(err, part){
 			if(err){
-				return res.send(500, err);
+				return res.status(500).send(err);
 			}
-
-			return res.send(data);
-		});
+			part.name = req.body.name;
+			part.partID = req.body.partID;
+			part.price = req.body.price;
+			part.save(function(err, post){
+				if(err){
+					return res.status(500).send(err);
+				}
+				post.status = "success";
+				return res.send(post);
+			})
+		})
 	});
 
-//api for a specfic student
-router.route('/studentList/:_id')
-	
-	//update specified student
-	.put(function(req,res){
-		Student.findById(req.params._id, function(err, student){
-			if(err) {
-				res.send(err);
+	//Probably no need for this.
+	//Why delete a part? May need that eventually.
+	// .delete(function(res, req){
+	// 	Part.delete()
+	// })
+
+router.route("/parts/")
+
+	//get all
+	.get(function(req, res){
+		Part.find(function(err, parts){
+			if(err){
+				return res.status(500).send(err);
 			}
-
-			student.name = req.body.name;
-			student.sid = req.body.sid;
-			student.LType = req.body.LType;
-			student.PType = req.body.PType;
-			student.RLevel = req.body.RLevel;
-			student.classes = req.body.classes;
-			student.groups = req.body.groups;
-
-			student.save(function(err, student){
-				if(err)
-					res.send(err);
-
-				res.json(student);
-			});
+			return res.send(parts);
 		});
 	})
-	//get specified student
-	.get(function(req,res){
-		Student.findById(req.params.id, function(err, student){
-			if(err)
-				res.send(err);
-			res.json(student);
-		});
-	})
-	//delete specified student
-	.delete(function(req,res){
-		Student.remove({
-			_id: req.params._id
-		}, function(err) {
-			if (err)
-				res.send(err);
-			res.json("deleted");
-		});
-	});
 
-//access students by class
-router.route('/studentList/class/:class')
-
-	.get(function(req, res){
-		Student.find({classes: {$elemMatch: {class: req.params.cid}}}, function(err, data){
-			if(err){
-				return res.send(500, err);
-			}
-
-			return res.send(data);
-		});
-	});
-
-//access students by group
-router.route('/studentList/group/:group')
-
-	.get(function(req, res){
-		Student.find({groups: {$elemMatch: {group: req.params.gid}}}, function(err, data){
-			if(err){
-				return res.send(500, err);
-			}
-
-			return res.send(data);
-		});
-	});
-
-//CLASSES
-//api for all classes
-router.route('/classList')
-	
-	//create a new class
+	//create new part
 	.post(function(req, res){
-
-		var class1 = new Class();
-		class1.name = req.body.name;
-		class1.teacher = req.body.teacher;
-		class1.studentList = req.body.studentList;
-		class1.groupList = req.body.groupList;
-		class1.save(function(err, post) {
-			if (err){
-				return res.send(500, err);
-			}
-			return res.json(class1);
-		});
-	})
-
-	.get(function(req, res){
-		Class.find(function(err, data){
+		var part = new Part();
+		part.name = req.body.name;
+		part.partID = req.body.partID;
+		part.price = req.body.price;
+		part.save(function(err, post){
 			if(err){
-				return res.send(500, err);
+				return res.status(500).send(err);
 			}
-
-			return res.send(data);
-		});
+			post.status = "success";
+			return res.send(post);
+		})
 	});
+	
 
-router.route('/classList/teacher/:teacher')
+//ORDER
+router.route("/orders/:_id")
 
+	//get order(s)
 	.get(function(req, res){
-		Class.find({teacher: req.params.teacher}, function(err, data){
+		//get by id
+		Order.find({_id: req.params._id}, function(err, order){
 			if(err){
-				return res.send(500, err);
+				return res.status(500).send(err);
 			}
+			return res.send(order);
+		})
+	})
 
-			return res.send(data);
-		});
+	//update existing order
+	.put(function(req, res){
+		Order.findOne({_id: req.params._id}, function(err, order){
+			if(err){
+				return res.status(500).send(err);
+			}
+			order.name = req.body.name;
+			order.total = req.body.total;
+			order.parts = req.body.parts;
+			order.services = req.body.services;
+			order.active = req.body.active;
+			order.save(function(err, post){
+				if(err){
+					return res.status(500).send(err);
+				}
+				post.status = "success";
+				return res.send(post);
+			})
+		})
 	});
 
-//api for a specfic class by _id
-router.route('/classList/:_id')
-	
-	//update specified group
-	.put(function(req,res){
-		Class.findById(req.params._id, function(err, c){
-			if(err)
-				res.send(err);
+router.route("/orders/")
 
-			c.name = req.body.name;
-			c.teacher = req.body.teacher;
-			c.studentList = req.body.studentList;
-			c.groupList = req.body.groupList;
-
-			c.save(function(err, group){
-				if(err)
-					res.send(err);
-
-				res.json(c);
-			});
-		});
+	//get all
+	.get(function(req, res){
+		Order.find(function(err, orders){
+			if(err){
+				return res.status(500).send(err);
+			}
+			return res.send(orders);
+		})
 	})
-	//get specified group
-	.get(function(req,res){
-		Class.find({_id: req.params.class}, function(err, c){
-			if(err)
-				res.send(err);
-			res.json(c);
-		});
-	})
-	//delete specified group
-	.delete(function(req,res){
-		Class.remove({
-			_id: req.params._id
-		}, function(err) {
-			if (err)
-				res.send(err);
-			res.json("deleted by id"+req.params._id);
-		});
-	});
 
-//GROUPS
-//api for all groups
-router.route('/groupList')
-	
-	//create a new group
+	//create new order
 	.post(function(req, res){
-
-		var group = new Group();
-		group.name = req.body.name;
-		group.size = req.body.size;
-		group.activityType = req.body.activityType;
-		group.selectType = req.body.selectType;
-		group.class = req.body.class;
-		group.studentList = req.body.studentList;
-		group.save(function(err, post) {
-			if (err){
-				return res.send(500, err);
-			}
-			return res.json(group);
-		});
-	})
-
-	//shouldn't be used
-	.get(function(req, res){
-		Group.find(function(err, data){
+		var order = new Order();
+		order.name = req.body.name;
+		order.total = req.body.total;
+		order.parts = req.body.parts;
+		order.services = req.body.services;
+		order.active = req.body.active;
+		order.save(function(err, post){
 			if(err){
-				return res.send(500, err);
+				return res.status(500).send(err);
 			}
-
-			return res.send(data);
-		});
-	});
-
-router.route('/groupList/class/:class')
-
-	.get(function(req, res){
-		Group.find({"class.cid": {$in: req.params.class}}, function(err, data){
-			if(err){
-				return res.send(500, err);
-			}
-
-			return res.send(data);
-		});
-	});
-
-//api for a specfic group
-router.route('/groupList/:id')
-	
-	//update specified group
-	.put(function(req,res){
-		Group.findById(req.params.id, function(err, group){
-			if(err)
-				res.send(err);
-
-			group.name = req.body.name;
-			group.size = req.body.size;
-			group.activityType = req.body.activityType;
-			group.selectType = req.body.selectType;
-			group.class = req.body.class;
-			group.studentList = req.body.studentList;
-
-			group.save(function(err, group){
-				if(err)
-					res.send(err);
-
-				res.json(group);
-			});
-		});
-	})
-	//get specified group
-	.get(function(req,res){
-		Group.findById(req.params.id, function(err, group){
-			if(err)
-				return res.send(err);
-			return res.json(group);
-		});
-	})
-	//delete specified group
-	.delete(function(req,res){
-		Group.remove({
-			_id: req.params.id
-		}, function(err) {
-			if (err)
-				res.send(err);
-			res.send("deleted :(");
-		});
+			post.status = "success";
+			return res.send(post);
+		})
 	});
 
 module.exports = router;

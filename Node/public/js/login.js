@@ -1,9 +1,5 @@
-// var userReady = false;
-// var emailReady = false;
-// var passReady = false;
-
 angular.module('mainApp')
-	.controller("authenticationController", function($scope, $rootScope, $state, $http, $location, loginService, signupService, checkUserAvailService, classTeacherService) {
+	.controller("authenticationController", function($scope, $rootScope, $state, loginService, signupService, checkUserAvailService, userService) {
 		// $scope.confPass="";
 		// $scope.confEmail="";
 		$scope.user = {username: '', password: ''};
@@ -12,11 +8,13 @@ angular.module('mainApp')
 		$scope.regFName="";
 		$scope.regLName="";
 		$scope.regEmail="";
+		$scope.regPhone="";
 		$scope.regUser="";
 		$scope.regPass="";
 		$scope.regPass2="";
 
 		$scope.validEmail=true;
+		$scope.validPhone=true;
 		$scope.validUser=true;
 		$scope.availUser=true;
 		$scope.validPass=true;
@@ -43,6 +41,10 @@ angular.module('mainApp')
   			// 	emailReady = false;
   			// }
 		};
+
+		$scope.isPhoneValid = function(){
+			$scope.validPhone = $scope.regPhone.match(/\d/g).length===10;
+		}
 
 		$scope.isPassValid = function(){
 			
@@ -121,6 +123,30 @@ angular.module('mainApp')
 
 	  	$scope.beginRegister = function(){
 	  		$state.go('Signup');
+	  		userService.query({}, function(res){
+	  			//if no users exist, create admin account
+	  			if(res.length===0){
+	  				$state.go('Login');
+	  				var admin={
+			  			type: "admin",
+			  			fname: "Brooks",
+						lname: "Nuss",
+						email: "",
+						username: "admin",
+						password: "adminTemp",
+						phone: "",
+						vehicles: [],
+						cart: []
+		  			};
+		  			signupService.save(admin, function(data){
+		  				$scope.login('admin', 'adminTemp');
+		  			});
+	  			}
+	  		});
+	  	}
+
+	  	$scope.beginLogin = function(){
+	  		$state.go('Login');
 	  	}
 
 	  	//maybe implement isUserAvail function using a service just to check
@@ -129,32 +155,38 @@ angular.module('mainApp')
 
 	  	$scope.isUserAvailable = function(){
 	  		$scope.availUser=checkUserAvailService.get({username: $scope.regUser}, function(res){
-	  			$scope.availUser=$scope.availUser.available
+	  			$scope.availUser=res;
 	  		});
 	  	}
 
 	  	$scope.register = function(){
-	  		$scope.user={
-	  			fname: $scope.regFName,
-				lname: $scope.regLName,
-				email: $scope.regEmail,
-				username: $scope.regUser,
-				password: $scope.regPass,
-	  		};
-	    	signupService.save($scope.user, function(data){
-	    		if(data.state == 'success'){
-		    			$rootScope.authenticated = data.user;
-			    		$rootScope.current_user = data.user;
-			    		$state.go('Home');
-	   			}
-	    		else{
-	    			$scope.error_message = data.message;
-	    			console.log(data.message);
-	    		}
-	    	})
+	  		if($scope.validPass && $scope.validMatch && $scope.validEmail && $scope.validUser){
+		  		$scope.user={
+		  			type: "client",
+		  			fname: $scope.regFName,
+					lname: $scope.regLName,
+					email: $scope.regEmail,
+					username: $scope.regUser,
+					password: $scope.regPass,
+					phone: $scope.regPhone,
+					vehicles: [],
+					cart: []
+		  		};
+		    	signupService.save($scope.user, function(data){
+		    		if(data.state == 'success'){
+			    			$rootScope.authenticated = data.user;
+				    		$rootScope.current_user = data.user;
+				    		$state.go('Home');
+		   			}
+		    		else{
+		    			$scope.error_message = data.message;
+		    			console.log(data);
+		    		}
+		    	})
+	    	}
 	  	};
 
 	  	$scope.bypass = function(){
-	  		$scope.login("bn38","hehexd");
+	  		$scope.login("bn38","Hehexd123");
 	  	};
 	});

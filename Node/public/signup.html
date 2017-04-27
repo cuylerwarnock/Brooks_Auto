@@ -5,15 +5,20 @@
 	<form>
 		<input type="text" id="fn" placeholder="First Name" ng-model="regFName">
 		<input type="text" id="ln" placeholder="Last Name" ng-model="regLName">
-		<input type="text" id="email" ng-model="regEmail" ng-change="isEmailValid()" placeholder="Email Address">
+		<input type="text" id="email" ng-model="regEmail" ng-model-options='{ debounce: 1000 }' ng-change="isEmailValid()" placeholder="Email Address">
 		<div class="validPass" id="output1" ng-show="!validEmail">Invalid email address</div>
-		<input type="text" id="newUser" ng-model="regUser" ng-change="isUserAvailable()" placeholder="New Username">
+		<input type="text" id="phone" ng-model="regPhone" ng-model-options='{ debounce: 1000 }' ng-change="isPhoneValid()" placeholder="Phone Number">
+		<div class="validPass" id="output6" ng-show="!validPhone">Invalid phone number</div>
+		<input type="text" id="newUser" ng-model="regUser" ng-model-options='{ debounce: 1000 }' ng-change="isUserAvailable()" placeholder="New Username">
 		<div class="validPass" id="output2" ng-show="!validUser">Invalid Username</div>
 		<div class="validPass" id="output3"  ng-show="!availUser">Username already taken</div>
-		<input type="Password" id="newPass" ng-model="regPass" ng-change="isPassValid()" placeholder="Password">
+		<input type="Password" id="newPass" ng-model="regPass" ng-model-options='{ debounce: 1000 }' ng-change="isPassValid()" placeholder="Password">
 		<div class="validPass" id="output4" ng-show="!validPass">Invalid password</div>
-		<input type="Password" id="confPass" ng-model="regPass2" ng-change="isPassValid()" placeholder="Re-Enter Password">
+		<input type="Password" id="confPass" ng-model="regPass2" ng-model-options='{ debounce: 1000 }' ng-change="isPassValid()" placeholder="Re-Enter Password">
 		<div class="validPass" id="output5"  ng-show="!validMatch">Passwords don't match</div>
 		<input type="submit" name="login" class="login login-submit" value="Create" ng-click="register()">
+		<div class="login-help">
+		    	<a href="" ng-click="beginLogin()">Return to Login</a>
+		    </div>
 	</form>
 </div>

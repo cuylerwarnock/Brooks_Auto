@@ -1,0 +1,82 @@
+<div class="row">
+	<div class="col-sm-10 col-sm-offset-1">
+		<div class="panel panel-default">
+			<div class="panel-heading text-center">
+				<h3>Parts</h3>
+			</div>
+			<div class="panel-body">
+				<table class="table-striped"><tbody>
+					<tr ng-repeat="part in partsList"><td>
+						<a href="" class="active-{{part.active}}" ng-click="setCurrentPart($index)">{{part.name+" - "+part.partID}}</a>
+					</td></tr>
+				</tbody></table>
+			</div>
+			<div class="panel-footer text-center">
+				<div class="row">
+					<div class="col-sm-4">
+						<label>Part name: <input name="" type="text" placeholder="part name" ng-model="partForm.name" class="form-control"></label>
+					</div>
+					<div class="col-sm-4">
+						<label>Part number: <input name="" type="text" placeholder="part number" ng-model="partForm.partID" class="form-control"></label>
+					</div>
+					<div class="col-sm-4">
+						<label>Part price:<input name="" type="text" placeholder="part price" ng-model="partForm.price" class="form-control"></label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="hoverTip">
+			<a ng-click="addPart()" href=""><span class="glyphicon glyphicon-plus addBtn" aria-hidden="true"></span><span class="addBtn"> Add </span></a>
+			<span class="tipText">Add a new part into the database</span>
+		</div>	
+	</div>
+
+	<div class="panel panel-default">
+			<div class="panel-heading text-center">
+				<h3>Orders</h3>
+			</div>
+			<div class="panel-body">
+				<table class="table-striped"><tbody>
+					<tr ng-repeat="order in ordersList"><td>
+						<a href="" class="active-{{order.active}}" ng-click="setCurrentOrder($index)">{{order.name+" - "+order.services}}</a>
+					</td></tr>
+				</tbody></table>
+			</div>
+			<div class="panel-footer text-center">
+				<div class="row">
+					<div class="col-sm-4">
+						<label>Order name: <input name="" type="text" placeholder="part name" ng-model="partForm.name" class="form-control"></label>
+					</div>
+					<div class="col-sm-4">
+						<label>Order total: <input name="" type="text" placeholder="part number" ng-model="partForm.partID" class="form-control"></label>
+					</div>
+					<div class="col-sm-4">
+						<label>Order active:<input name="" type="text" placeholder="part price" ng-model="partForm.price" class="form-control"></label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<label>Parts:<br></label>
+						<table class="table-striped inner-table table-bordered table-condensed"><tbody>
+							<tr ng-repeat="part in ordersList[currentPart]"><td>
+								<a href="">{{part.name+" - "+part.partID}}</a>
+							</td></tr>
+						</tbody></table>
+					</div>
+					<div class="col-sm-6">
+						<label>Services:<br></label>
+						<table class="table-striped inner-table table-bordered table-condensed"><tbody>
+							<tr ng-repeat="service in serviceList[currentPart]"><td>
+								<a href="">{{part.name+" - "+part.partID}}</a>
+							</td></tr>
+						</tbody></table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="hoverTip">
+			<a ng-click="removeOrder()" href=""><span class="glyphicon glyphicon-minus removeBtn" aria-hidden="true"></span><span class="removeBtn"> Remove </span></a>
+			<span class="tipText">Remove an order from the database</span>
+		</div>	
+	</div>
+</div>
