@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var userSchema = new mongoose.Schema({
+	type: String,
 	username: String,
 	password: String, //hash created from pwd
 	created_at: {type: Date, default: Date.now},
@@ -8,7 +9,8 @@ var userSchema = new mongoose.Schema({
 	lname: String,
 	email: String,
 	phone: String,
-	vehicles: Array
+	vehicles: Array,
+	cart: Array
 });
 
 var partSchema = new mongoose.Schema({
@@ -21,7 +23,8 @@ var orderSchema = new mongoose.Schema({
 	name: String,
 	total: Number,
 	parts: Array,
-	created_at: {type: Date, default: Date.now}
+	created_at: {type: Date, default: Date.now},
+	active: Boolean
 });
 
 //Declare model called User with schema userSchema
@@ -36,3 +39,7 @@ mongoose.model("Order", orderSchema);
 //This requires more db calls to resolve the part object,
 //but doesn't require massive amounts of code and thought for updates.
 //Simple, but less efficient, but who cares for this garbo project xD!
+
+//User has vehicles
+//Vehicles have order history
+//User's cart has orders

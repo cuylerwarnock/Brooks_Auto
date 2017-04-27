@@ -1,5 +1,5 @@
 angular.module('mainApp')
-	.controller("authenticationController", function($scope, $rootScope, $state, $http, $location, loginService, signupService, checkUserAvailService) {
+	.controller("authenticationController", function($scope, $rootScope, $state, loginService, signupService, checkUserAvailService, userService) {
 		// $scope.confPass="";
 		// $scope.confEmail="";
 		$scope.user = {username: '', password: ''};
@@ -123,6 +123,26 @@ angular.module('mainApp')
 
 	  	$scope.beginRegister = function(){
 	  		$state.go('Signup');
+	  		userService.query({}, function(res){
+	  			//if no users exist, create admin account
+	  			if(res.length===0){
+	  				$state.go('Login');
+	  				var admin={
+			  			type: "admin",
+			  			fname: "Brooks",
+						lname: "Nuss",
+						email: "",
+						username: "admin",
+						password: "adminTemp",
+						phone: "",
+						vehicles: [],
+						cart: []
+		  			};
+		  			signupService.save(admin, function(data){
+		  				$scope.login('admin', 'adminTemp');
+		  			});
+	  			}
+	  		});
 	  	}
 
 	  	$scope.beginLogin = function(){
@@ -142,13 +162,15 @@ angular.module('mainApp')
 	  	$scope.register = function(){
 	  		if($scope.validPass && $scope.validMatch && $scope.validEmail && $scope.validUser){
 		  		$scope.user={
+		  			type: "client",
 		  			fname: $scope.regFName,
 					lname: $scope.regLName,
 					email: $scope.regEmail,
 					username: $scope.regUser,
 					password: $scope.regPass,
 					phone: $scope.regPhone,
-					vehicles: []
+					vehicles: [],
+					cart: []
 		  		};
 		    	signupService.save($scope.user, function(data){
 		    		if(data.state == 'success'){

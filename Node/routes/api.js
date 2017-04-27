@@ -34,23 +34,13 @@ router.route('/users/:username')
 	//get user
 	.get(function(req, res){
 		//username passed, so one user
-		if(req.params.username){
-			User.findOne({username: req.params.username}, function(err, user){
-				if (err){
-					return res.status(500).send(err);
-				}
-				//return user. if none found, returns null
-				return res.send(user);
-			});
-		}
-		else{ //no username passed, get all users
-			User.find(function(err, users){
-				if(err){
-					return res.status(500).send(err);
-				}
-				return res.send(users);
-			})
-		}
+		User.findOne({username: req.params.username}, function(err, user){
+			if (err){
+				return res.status(500).send(err);
+			}
+			//return user. if none found, returns null
+			return res.send(user);
+		});
 	})
 
 	// //create new user
@@ -107,15 +97,32 @@ router.route('/users/:username')
 		})
 	});
 
+router.route('/users/')
+	
+	.get(function(req, res){
+		User.find(function(err, users){
+			if(err){
+				return res.status(500).send(err);
+			}
+			return res.send(users);
+		})
+	})
+
 //update password
-router.route('/users/password/:username')
+router.route('/users/password/:_id')
 
 	.put(function(req, res){
-		User.findOne({username: req.params.username}, function(err, newUser){
+		User.findOne({_id: req.params._id}, function(err, newUser){
 			if (err){
 				return res.status(500).send(err);
 			}
-			newUser.password=bCrypt.hashSync(req.params.password, bCrypt.genSaltSync(10), null);
+			newUser.password=bCrypt.hashSync(req.body.password, bCrypt.genSaltSync(10), null);
+			newUser.save(function(err, updateUser){
+				if(err){
+					return res.status(500).send(err);
+				}
+				return res.send(updateUser);
+			})
 		})
 	});
 
