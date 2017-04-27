@@ -4,7 +4,11 @@
 
 <h2>Add New Vehicle</h2>
 <form name="form" ng-model="form" novalidate class="simple-form">
-	<input type="text" placeholder="Username" id="user" ng-model="username">
-	<input type="password" placeholder="Password" id="pass" ng-model="password">
-	<input type="submit" class="login login-submit" value="log-in" ng-click="storeVehicle(year, make, model)">
+	<label>Year</label>
+	<input type="text" placeholder="Year" id="year" ng-model="form.year">
+	<label>Make</label>
+	<input type="text" placeholder="Make" id="make" ng-model="form.make">
+	<label>Model</label>
+	<input type="text" placeholder="Model" id="model" ng-model="form.model">
+	<input type="submit" class="login login-submit" value="log-in" ng-click="addVehicle()">
 </form>
