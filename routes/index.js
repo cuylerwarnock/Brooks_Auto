@@ -18,11 +18,6 @@ function isAuthenticated (req, res, next) {
 	return res.redirect('/login');
 };
 
-router.use('/studentList', isAuthenticated);
-router.use('/classList', isAuthenticated);
-router.use('/groupList', isAuthenticated);
-router.use('/home', isAuthenticated);
-
 /* GET home page. */
 router.route('/')
 	.get(function(req, res) {
