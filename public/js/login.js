@@ -185,8 +185,4 @@ angular.module('mainApp')
 		    	})
 	    	}
 	  	};
-
-	  	$scope.bypass = function(){
-	  		$scope.login("bn38","Hehexd123");
-	  	};
 	});
