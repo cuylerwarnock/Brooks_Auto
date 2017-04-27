@@ -250,8 +250,22 @@ app.factory('partService', function($resource){
     });
 });
 
+app.factory('partAllService', function($resource){
+	return $resource('/api/parts/', {},
+    {
+        'update': { method:'PUT' }
+    });
+});
+
 app.factory('orderService', function($resource){
 	return $resource('/api/orders/:_id', { _id: '@_id' },
+    {
+        'update': { method:'PUT' }
+    });
+});
+
+app.factory('orderAllService', function($resource){
+	return $resource('/api/orders/', {},
     {
         'update': { method:'PUT' }
     });

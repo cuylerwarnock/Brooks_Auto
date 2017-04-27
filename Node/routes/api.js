@@ -131,43 +131,17 @@ router.route('/parts/:_id')
 
 	//Get part(s)
 	.get(function(req, res){
-		if(req.params._id){
-			//get by id
-			Part.find({_id: req.params._id}, function(err, part){
-				if(err){
-					return res.status(500).send(err);
-				}
-				return res.send(part);
-			});
-		}
-		else{
-			//get all
-			Part.find(function(err, parts){
-				if(err){
-					return res.status(500).send(err);
-				}
-				return res.send(parts);
-			});
-		}
-	})
-
-	//create new part
-	.post(function(req, res){
-		var part = new Part();
-		part.name = req.body.name;
-		part.partID = req.body.partID;
-		part.price = req.body.price;
-		part.save(function(err, post){
+		//get by id
+		Part.find({_id: req.params._id}, function(err, part){
 			if(err){
 				return res.status(500).send(err);
 			}
-			post.status = "success";
-			return res.send(post);
-		})
+			return res.send(part);
+		});
 	})
 
 	//update existing part
-	.put(function(res, req){
+	.put(function(req, res){
 		Part.findOne({_id: req.params._id}, function(err, part){
 			if(err){
 				return res.status(500).send(err);
@@ -191,29 +165,79 @@ router.route('/parts/:_id')
 	// 	Part.delete()
 	// })
 
+router.route("/parts/")
+
+	//get all
+	.get(function(req, res){
+		Part.find(function(err, parts){
+			if(err){
+				return res.status(500).send(err);
+			}
+			return res.send(parts);
+		});
+	})
+
+	//create new part
+	.post(function(req, res){
+		var part = new Part();
+		part.name = req.body.name;
+		part.partID = req.body.partID;
+		part.price = req.body.price;
+		part.save(function(err, post){
+			if(err){
+				return res.status(500).send(err);
+			}
+			post.status = "success";
+			return res.send(post);
+		})
+	});
+	
+
 //ORDER
 router.route("/orders/:_id")
 
 	//get order(s)
 	.get(function(req, res){
-		if(req.params._id){
-			//get by id
-			Order.find(function(err, orders){
+		//get by id
+		Order.find({_id: req.params._id}, function(err, order){
+			if(err){
+				return res.status(500).send(err);
+			}
+			return res.send(order);
+		})
+	})
+
+	//update existing order
+	.put(function(req, res){
+		Order.findOne({_id: req.params._id}, function(err, order){
+			if(err){
+				return res.status(500).send(err);
+			}
+			order.name = req.body.name;
+			order.total = req.body.total;
+			order.parts = req.body.parts;
+			order.services = req.body.services;
+			order.active = req.body.active;
+			order.save(function(err, post){
 				if(err){
 					return res.status(500).send(err);
 				}
-				return res.send(orders);
+				post.status = "success";
+				return res.send(post);
 			})
-		}
-		else{
-			//get all
-			Order.find({_id: req.params._id}, function(err, order){
-				if(err){
-					return res.status(500).send(err);
-				}
-				return res.send(order);
-			})
-		}
+		})
+	});
+
+router.route("/orders/")
+
+	//get all
+	.get(function(req, res){
+		Order.find(function(err, orders){
+			if(err){
+				return res.status(500).send(err);
+			}
+			return res.send(orders);
+		})
 	})
 
 	//create new order
@@ -222,31 +246,14 @@ router.route("/orders/:_id")
 		order.name = req.body.name;
 		order.total = req.body.total;
 		order.parts = req.body.parts;
+		order.services = req.body.services;
+		order.active = req.body.active;
 		order.save(function(err, post){
 			if(err){
 				return res.status(500).send(err);
 			}
 			post.status = "success";
 			return res.send(post);
-		})
-	})
-
-	//update existing order
-	.put(function(res, req){
-		Order.findOne({_id: req.params._id}, function(err, order){
-			if(err){
-				return res.status(500).send(err);
-			}
-			order.name = req.body.name;
-			order.total = req.body.total;
-			order.parts = req.body.parts;
-			order.save(function(err, post){
-				if(err){
-					return res.status(500).send(err);
-				}
-				post.status = "success";
-				return res.send(post);
-			})
 		})
 	});
 

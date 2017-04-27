@@ -16,13 +16,14 @@ var userSchema = new mongoose.Schema({
 var partSchema = new mongoose.Schema({
 	name: String,
 	partID: String,
-	price: Number,
+	price: Number
 });
 
 var orderSchema = new mongoose.Schema({
 	name: String,
 	total: Number,
 	parts: Array,
+	services: Array,
 	created_at: {type: Date, default: Date.now},
 	active: Boolean
 });
