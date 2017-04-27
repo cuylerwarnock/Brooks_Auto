@@ -1,0 +1,21 @@
+<h1>Cart</h1>
+
+<div ng-repeat="item in current_user.cart">
+	<div class="row">
+		<div class="col-sm-4 text-center">
+			<img style="max-height: 100%; max-width: 100%;" ng-src="{{ item.img }}" alt="description" border="0">
+			<h3>{{item.name}}</h3>
+			<h4>{{item.price}}</h4>
+			<br><br><br>
+		</div>
+		<div class="col-sm-2">
+			<button class="btn btn-danger" ng-click="removeCart(item, $index)">Remove from cart</button>
+		</div>
+	</div>
+</div>
+
+<h3>Specify a vehicle: </h3>
+<select name="" ng-model="vehicle" class="form-control" ng-options="vehicle.year+' '+vehicle.make+' '+vehicle.model for vehicle in current_user.vehicles"></select>
+
+<h2>Cart total: ${{cartTotal}}</h2>
+<button class="btn btn-danger" ng-click="submitCart()">Place Order</button>

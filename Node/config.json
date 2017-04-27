@@ -1,0 +1,6 @@
+{
+	"productionServer":
+	{
+		"url": "mongodb://brooks-auto:QR8HxWpTaSL0d7EcSC4pDr8xqRr6Gd2PZXqw4F7BkkiGHVMtf7lq1X6fhr0KfOn5udb50snvh26nKSu3qkC81A==@brooks-auto.documents.azure.com:10250/?ssl=true"
+	}
+}
