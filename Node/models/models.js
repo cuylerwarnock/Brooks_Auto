@@ -25,7 +25,7 @@ var orderSchema = new mongoose.Schema({
 	parts: Array,
 	services: Array,
 	created_at: {type: Date, default: Date.now},
-	active: Boolean
+	active: String
 });
 
 //Declare model called User with schema userSchema
