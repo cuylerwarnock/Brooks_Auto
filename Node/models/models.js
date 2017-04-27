@@ -23,6 +23,7 @@ var orderSchema = new mongoose.Schema({
 	name: String,
 	total: Number,
 	parts: Array,
+	vehicle: Object,
 	created_at: {type: Date, default: Date.now},
 	active: String
 });

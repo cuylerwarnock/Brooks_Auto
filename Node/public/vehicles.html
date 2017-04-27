@@ -11,22 +11,29 @@
 				</tbody></table>
 			</div>
 			<div class="panel-footer text-center">
-				<div class="row">
-					<div class="col-sm-4">
-						<label>Year: <input name="" type="text" placeholder="Year" ng-model="form.year" class="form-control"></label>
+				<form>
+					<div class="row">
+						<div class="col-sm-4">
+							<label>Year: <input name="" type="text" placeholder="Year" ng-model="form.year" class="form-control"></label>
+						</div>
+						<div class="col-sm-4">
+							<label>Make: <input name="" type="text" placeholder="Make" ng-model="form.make" class="form-control"></label>
+						</div>
+						<div class="col-sm-4">
+							<label>Model: <input name="" type="text" placeholder="Model" ng-model="form.model" class="form-control"></label>
+						</div>
 					</div>
-					<div class="col-sm-4">
-						<label>Make: <input name="" type="text" placeholder="Make" ng-model="form.make" class="form-control"></label>
-					</div>
-					<div class="col-sm-4">
-						<label>Model: <input name="" type="text" placeholder="Model" ng-model="form.model" class="form-control"></label>
-					</div>
-				</div>
+					<input type="submit" ng-click="updateVehicle()" value="Update Vehicle">
+				</form>
 			</div>
 		</div>
 		<div class="hoverTip">
 			<a ng-click="addVehicle()" href=""><span class="glyphicon glyphicon-plus addBtn" aria-hidden="true"></span><span class="addBtn"> Add </span></a>
-			<span class="tipText">Add a new part into the database</span>
+			<span class="tipText">Add a new vehicle to the database</span>
+		</div>
+		<div class="hoverTip">
+			<a ng-click="removeVehicle()" href=""><span class="glyphicon glyphicon-minus removeBtn" aria-hidden="true"></span><span class="removeBtn"> Remove </span></a>
+			<span class="tipText">Remove a vehicle from the database</span>
 		</div>	
 	</div>
 

@@ -3,13 +3,16 @@ angular.module("mainApp").controller("cartController", function($scope, $rootSco
 	$scope.current;
 	$scope.form = {};
 	$scope.cartTotal = 0;
+	$scope.vehicle = "";
 	$rootScope.current_user.cart.forEach(function(cartItem){
 		$scope.cartTotal += Number(cartItem.price);
 	})
 	$scope.cartTotal = $scope.cartTotal.toFixed(2);
-	//from cart page, have remove item from cart, submit cart.
-	$scope.removeCart = function(){
-		$rootScope.current_user.cart.splice($scope.current, 1);
+
+	$scope.removeCart = function(item, index){
+		console.log(item);
+		$scope.cartTotal = ($scope.cartTotal-item.price).toFixed(2);
+		$rootScope.current_user.cart.splice(index, 1);
 		userService.update($rootScope.current_user);
 	}
 
@@ -21,17 +24,19 @@ angular.module("mainApp").controller("cartController", function($scope, $rootSco
 	}
 
 	$scope.submitCart = function(){
-		//create order object, send it off
-		var order = {
-			name: $rootScope.current_user.fname+" "+$rootScope.current_user.lname,
-			total: $scope.cartTotal,
-			parts: $rootScope.current_user.cart,
-			active: "Yes"
-		};
-		orderAllService.save(order, function(res){
-			$rootScope.current_user.cart = [];
-			userService.update($rootScope.current_user);
-			$scope.cartTotal = 0;
-		});
+		if($rootScope.current_user.cart.length>0 && $scope.vehicle!==""){
+			var order = {
+				name: $rootScope.current_user.fname+" "+$rootScope.current_user.lname,
+				total: $scope.cartTotal,
+				parts: $rootScope.current_user.cart,
+				active: "Yes",
+				vehicle: $scope.vehicle
+			};
+			orderAllService.save(order, function(res){
+				$rootScope.current_user.cart = [];
+				userService.update($rootScope.current_user);
+				$scope.cartTotal = 0;
+			});
+		}
 	}
 })

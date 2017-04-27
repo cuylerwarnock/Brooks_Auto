@@ -9,10 +9,13 @@
 			<br><br><br>
 		</div>
 		<div class="col-sm-2">
-			<button class="btn btn-danger" ng-click="removeCart(part)">Remove from cart</button>
+			<button class="btn btn-danger" ng-click="removeCart(item, $index)">Remove from cart</button>
 		</div>
 	</div>
 </div>
+
+<h3>Specify a vehicle: </h3>
+<select name="" ng-model="vehicle" class="form-control" ng-options="vehicle.year+' '+vehicle.make+' '+vehicle.model for vehicle in current_user.vehicles"></select>
 
 <h2>Cart total: ${{cartTotal}}</h2>
 <button class="btn btn-danger" ng-click="submitCart()">Place Order</button>
