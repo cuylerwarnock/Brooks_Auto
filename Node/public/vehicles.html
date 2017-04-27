@@ -1,10 +1,31 @@
-<h1>Vehicles</h1>
-
-<h2>Current Vehicles</h2>
-
-<h2>Add New Vehicle</h2>
-<form name="form" ng-model="form" novalidate class="simple-form">
-	<input type="text" placeholder="Username" id="user" ng-model="username">
-	<input type="password" placeholder="Password" id="pass" ng-model="password">
-	<input type="submit" class="login login-submit" value="log-in" ng-click="storeVehicle(year, make, model)">
-</form>
+<div class="col-sm-10 col-sm-offset-1">
+		<div class="panel panel-default">
+			<div class="panel-heading text-center">
+				<h3>Vehicles</h3>
+			</div>
+			<div class="panel-body">
+				<table class="table-striped"><tbody>
+					<tr ng-repeat="vehicle in vehiclesList"><td>
+						<a href="" class="active-{{part.active}}" ng-click="setCurrentVehicle($index)">{{vehicle.year+" - "+vehicle.make+" - "+vehicle.model}}</a>
+					</td></tr>
+				</tbody></table>
+			</div>
+			<div class="panel-footer text-center">
+				<div class="row">
+					<div class="col-sm-4">
+						<label>Year: <input name="" type="text" placeholder="Year" ng-model="form.year" class="form-control"></label>
+					</div>
+					<div class="col-sm-4">
+						<label>Make: <input name="" type="text" placeholder="Make" ng-model="form.make" class="form-control"></label>
+					</div>
+					<div class="col-sm-4">
+						<label>Model: <input name="" type="text" placeholder="Model" ng-model="form.model" class="form-control"></label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="hoverTip">
+			<a ng-click="addVehicle()" href=""><span class="glyphicon glyphicon-plus addBtn" aria-hidden="true"></span><span class="addBtn"> Add </span></a>
+			<span class="tipText">Add a new part into the database</span>
+		</div>	
+	</div>

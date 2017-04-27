@@ -15,8 +15,8 @@ var userSchema = new mongoose.Schema({
 
 var partSchema = new mongoose.Schema({
 	name: String,
-	partID: String,
-	price: Number
+	price: Number,
+	img: String
 });
 
 var orderSchema = new mongoose.Schema({
