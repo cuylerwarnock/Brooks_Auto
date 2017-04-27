@@ -36,10 +36,11 @@ angular.module("mainApp").controller("adminController", function($scope, $rootSc
 	}
 
 	$scope.setCurrentOrder=function(index) {
+		var vehicle = $scope.ordersList[index].vehicle;
 		$scope.currentOrder=index;
 		$scope.orderForm.name=$scope.ordersList[index].name;
 		$scope.orderForm.total=$scope.ordersList[index].total;
 		$scope.orderForm.parts=$scope.ordersList[index].parts;
-		$scope.orderForm.active=$scope.ordersList[index].active;
+		$scope.orderForm.vehicle=vehicle.year+" "+vehicle.make+" "+vehicle.model;
 	}
 })

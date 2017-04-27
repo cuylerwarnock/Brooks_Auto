@@ -1,10 +1,8 @@
 /*
 COMMONLY USED COLORS
 
-orange - #e58d22
-blue - #abceea
-green - #b1eaab
-navbar-grey - #f0f0f0
+red - ##ff5246
+navbar-grey - #dddddd
 
 */
 body {
@@ -48,13 +46,13 @@ body:after {
 
 .navbar h4{
 	font-weight: bold;
-	color: #e58d22;
+	color: #ff5246;
 	font-size: 22px;
 	background-color: #f0f0f0;
 	border-radius: 25px;
 	padding: 5px;
 	border-width: 4px; 
-	border-color: #abceea;
+	border-color: #ff5246;
 }
 
 .navigation {
@@ -227,7 +225,7 @@ body {
 
 .sidebar .active-true, .sidebar .active-true:hover, .sidebar .active-true:focus {
 	transition: .5s;
-	border-color: #abceea;
+	border-color: #ff5246;
 	border-left-width:30px;
 	border-top-width:0px;
 	color: black;
@@ -251,9 +249,18 @@ body {
     transition:.2s;
 }
 
+
 .navbar li a:hover{
 	text-decoration: none;
-	color:#e58d22;
+	color:#ff5246;
+}
+
+.dropdown-menu li a{
+	color: #222222;
+}
+
+.dropdown-menu li a:hover{
+	color: #ff5246;
 }
 
 .navbar button{
@@ -272,9 +279,8 @@ body {
     transition:.5s;
 }
 .navbar button:hover {
-	background-color:#abceea;
+	background-color:#ff5246;
 	color: black;
-
 }
 
 .vertical-align {
@@ -350,12 +356,12 @@ body {
 	font-weight:100;
 }
 .panel-default h5 {
-	color: #e58d22;
+	color: #ff5246;
 }
 
 .panel-body {
 	padding: 0px;
-	background-color: #b1eaab;
+	background-color: #ff5246;
 }
 
 .table-striped>tbody>tr:nth-of-type(odd) {
@@ -389,7 +395,7 @@ body {
 }
 
 .panel-body form{
-	background-color: #abceea;
+	background-color: #ff5246;
 }
 .panel-body tr a{
 	font-weight: 100;
@@ -397,7 +403,7 @@ body {
 }
 
 .panel-body tr a:focus{
-	color: #e58d22;
+	color: green;
 	text-decoration: none;
 	font-weight: 120;
 }
@@ -421,7 +427,7 @@ body {
 }
 .modal-body mark {
 	background-color:white;
-	color:#e58d22;
+	color:#ff5246;
 }
 
 .hoverTip{
