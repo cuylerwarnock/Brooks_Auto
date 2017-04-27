@@ -37,10 +37,9 @@ angular.module("mainApp").controller("adminController", function($scope, $rootSc
 
 	$scope.setCurrentOrder=function(index) {
 		$scope.currentOrder=index;
-		$scope.orderForm.name=$scope.partsList[index].name;
-		$scope.orderForm.total=$scope.partsList[index].total;
-		$scope.orderForm.parts=$scope.partsList[index].parts;
-		$scope.orderForm.services=$scope.partsList[index].services;
-		$scope.orderForm.active=$scope.partsList[index].active;
+		$scope.orderForm.name=$scope.ordersList[index].name;
+		$scope.orderForm.total=$scope.ordersList[index].total;
+		$scope.orderForm.parts=$scope.ordersList[index].parts;
+		$scope.orderForm.active=$scope.ordersList[index].active;
 	}
 })

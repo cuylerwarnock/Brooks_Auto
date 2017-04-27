@@ -3,7 +3,12 @@ angular.module("mainApp").controller("pricesController", function($scope, $rootS
 	$scope.currentPart;
 
 	$scope.addCart = function(item){
-		$rootScope.current_user.cart.push(item);
+		pItem = {
+			name: item.name,
+			price: item.price,
+			img: item.img
+		}
+		$rootScope.current_user.cart.push(pItem);
 		userService.update($rootScope.current_user);
 	}
 

@@ -41,7 +41,7 @@
 		<div class="panel-body">
 			<table class="table-striped"><tbody>
 				<tr ng-repeat="order in ordersList"><td>
-					<a href="" class="active-{{order.active}}" ng-click="setCurrentOrder($index)">{{order.name+" - "+order.services}}</a>
+					<a href="" class="active-{{order.active}}" ng-click="setCurrentOrder($index)">{{order.name+" - $"+order.total}}</a>
 				</td></tr>
 			</tbody></table>
 		</div>
@@ -59,22 +59,22 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-sm-6">
+					<div class="col-sm-6 col-sm-offset-3">
 						<label>Parts:<br></label>
-						<table class="table-striped inner-table table-bordered table-condensed"><tbody>
-							<tr ng-repeat="part in ordersList[currentPart].parts"><td>
+						<table class="table-striped inner-table table-bordered table-condensed" style="margin: auto;"><tbody>
+							<tr ng-repeat="part in ordersList[currentOrder].parts"><td>
 								<a href="">{{part.name}}</a>
 							</td></tr>
 						</tbody></table>
 					</div>
-					<div class="col-sm-6">
+					<!-- <div class="col-sm-6">
 						<label>Services:<br></label>
 						<table class="table-striped inner-table table-bordered table-condensed"><tbody>
 							<tr ng-repeat="service in ordersList[currentOrder].services"><td>
 								<a href="">{{service.name}}</a>
 							</td></tr>
 						</tbody></table>
-					</div>
+					</div> -->
 				</div>
 				<input type="submit" ng-click="updateOrder()" value="Update Order">
 			</form>

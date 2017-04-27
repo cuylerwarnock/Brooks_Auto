@@ -257,7 +257,6 @@ router.route("/orders/")
 		order.name = req.body.name;
 		order.total = req.body.total;
 		order.parts = req.body.parts;
-		order.services = req.body.services;
 		order.active = req.body.active;
 		order.save(function(err, post){
 			if(err){
