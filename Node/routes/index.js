@@ -34,11 +34,6 @@ router.route('/login')
 		res.sendFile("main.html", {"root": "./public"});
 	});
 
-router.route('/signup')
-	.get(function(req, res) {
-		res.sendFile("main.html", {"root": "./public"});
-	});
-
 router.route('/studentList')
 	.get(function(req, res) {
 		res.sendFile("main.html", {"root": "./public"});

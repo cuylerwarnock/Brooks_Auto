@@ -1,13 +1,12 @@
-angular.module("mainApp").controller("vehiclesController", function($scope, $stateParams){
-	$scope.vehiclesArr = [];
+angular.module("mainApp").controller("vehiclesController", function($scope, $stateParams, $rootScope, userService){
+	$scope.vehiclesList = userService.query($rootScope.current_user.username).vehicles;
 	$scope.form = {};
 
-	$scope.addVehicle = function(vehicle) {
-		var newVehicle = {
-			year: form.year,
-			make: form.make,
-			model: form.model,
-			history: []
-		};
+	$scope.setCurrentVehicle=function(index) {
+		$scope.currentVehicle=index;
+		$scope.form.year=$scope.partsList[index].year;
+		$scope.form.make=$scope.partsList[index].make;
+		$scope.form.model=$scope.partsList[index].model;
+
 	}
 })
