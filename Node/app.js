@@ -12,8 +12,9 @@ var index = require('./routes/index');
 var api = require('./routes/api');
 var authenticate = require('./routes/authenticate')(passport);
 var mongoose = require('mongoose');
+var config = require('./config.json');
 //connect to mongoDB
-mongoose.connect("mongodb://localhost/Brooks_Auto");
+mongoose.connect(config.productionServer.url);
 
 var app = express();
 // view engine setup

@@ -75,8 +75,7 @@ app.config([
 		});
 		$stateProvider.state('Contact', {
 			url: '/contact',
-			templateUrl: '/contact.html',
-			controller: 'contactController'
+			templateUrl: '/contact.html'
 		});
 		$stateProvider.state('Admin', {
 			url: '/admin',

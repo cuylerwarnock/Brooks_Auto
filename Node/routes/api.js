@@ -78,7 +78,7 @@ router.route('/users/:username')
 
 	//update existing user
 	.put(function(req, res){
-		User.findOne({username: req.params.username}, function(err, user){
+		User.findOne({username: req.body.username}, function(err, user){
 			if (err){
 				return res.status(500).send(err);
 			}
@@ -87,7 +87,8 @@ router.route('/users/:username')
 			user.email = req.body.email;
 			user.phone = req.body.phone;
 			user.username = req.body.username;
-			user.vehicles = [];
+			user.vehicles = req.body.vehicles;
+			user.cart = req.body.cart;
 			user.save(function(err, updateUser){
 				if(err){
 					return res.status(500).send(err);
@@ -147,8 +148,9 @@ router.route('/parts/:_id')
 				return res.status(500).send(err);
 			}
 			part.name = req.body.name;
-			part.partID = req.body.partID;
 			part.price = req.body.price;
+			part.img = req.body.img;
+			part._id = req.body._id;
 			part.save(function(err, post){
 				if(err){
 					return res.status(500).send(err);
@@ -181,8 +183,8 @@ router.route("/parts/")
 	.post(function(req, res){
 		var part = new Part();
 		part.name = req.body.name;
-		part.partID = req.body.partID;
 		part.price = req.body.price;
+		part.url = req.body.url;
 		part.save(function(err, post){
 			if(err){
 				return res.status(500).send(err);
@@ -226,7 +228,16 @@ router.route("/orders/:_id")
 				return res.send(post);
 			})
 		})
-	});
+	})
+
+	.delete(function(req, res){
+		Order.remove({_id: req.params._id}, function(err){
+			if(err){
+				return res.status(500).send(err);
+			}
+			return res.send("Deleted");
+		})
+	})
 
 router.route("/orders/")
 

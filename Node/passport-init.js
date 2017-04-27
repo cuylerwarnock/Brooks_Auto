@@ -73,6 +73,7 @@ module.exports = function(passport){
 					newUser.email = req.body.email;
 					newUser.phone = req.body.phone;
 					newUser.vehicles = [];
+					newUser.cart = [];
 					newUser.type = req.body.type;
 
 					// save the user
