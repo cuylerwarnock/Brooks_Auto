@@ -1,1 +1,18 @@
 <h1>Cart</h1>
+
+<div ng-repeat="item in current_user.cart">
+	<div class="row">
+		<div class="col-sm-4 text-center">
+			<img style="max-height: 100%; max-width: 100%;" ng-src="{{ item.img }}" alt="description" border="0">
+			<h3>{{item.name}}</h3>
+			<h4>{{item.price}}</h4>
+			<br><br><br>
+		</div>
+		<div class="col-sm-2">
+			<button class="btn btn-danger" ng-click="removeCart(part)">Remove from cart</button>
+		</div>
+	</div>
+</div>
+
+<h2>Cart total: ${{cartTotal}}</h2>
+<button class="btn btn-danger" ng-click="submitCart()">Place Order</button>
