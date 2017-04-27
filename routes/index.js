@@ -21,7 +21,7 @@ function isAuthenticated (req, res, next) {
 /* GET home page. */
 router.route('/')
 	.get(function(req, res) {
-		res.send("hello");
+		res.sendFile("../public/main.html");
 	});
 
 router.route('/default.html')
