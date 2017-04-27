@@ -18,50 +18,22 @@ function isAuthenticated (req, res, next) {
 	return res.redirect('/login');
 };
 
+router.use('/home', isAuthenticated);
+
 /* GET home page. */
 router.route('/')
 	.get(function(req, res) {
 		res.sendFile("main.html", {"root": "../public"});
 	});
 
-router.route('/default.html')
-	.get(function(req, res) {
-		res.sendFile("main.html", {"root": "./public"});
-	});
-
-router.route('/main.html')
-	.get(function(req, res) {
-		res.sendFile("main.html", {"root": "./public"});
-	});
-
-router.route('/login.html')
-	.get(function(req, res) {
-		res.sendFile("main.html", {"root": "./public"});
-	});
-
 router.route('/login')
 	.get(function(req, res) {
-		res.sendFile("main.html", {"root": "./public"});
-	});
-
-router.route('/studentList')
-	.get(function(req, res) {
-		res.sendFile("main.html", {"root": "./public"});
+		res.sendFile("main.html", {"root": "../public"});
 	});
 
 router.route('/home')
 	.get(function(req, res) {
-		res.sendFile("main.html", {"root": "./public"});
-	});
-
-router.route('/classList')
-	.get(function(req, res) {
-		res.sendFile("main.html", {"root": "./public"});
-	});
-
-router.route('/groupList')
-	.get(function(req, res) {
-		res.sendFile("main.html", {"root": "./public"});
+		res.sendFile("main.html", {"root": "../public"});
 	});
 
 module.exports = router;
